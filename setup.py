@@ -9,7 +9,7 @@ def get_requirements():
         return [line.strip() for line in fh.readlines()]
 
 def get_version():
-    with open("celltypist/__init__.py", "rt", encoding="utf-8") as fh:
+    with open("multicelltypist/__init__.py", "rt", encoding="utf-8") as fh:
         for line in fh.readlines():
             if line.startswith('__version__'):
                 delim = '"' if '"' in line else "'"
@@ -17,14 +17,14 @@ def get_version():
     raise RuntimeError("Unable to find version string in celltypist/__init__.py")
 
 setuptools.setup(
-    name="celltypist",
+    name="multicelltypist",
     version=get_version(),
     author="Chuan Xu",
     author_email="cx1@sanger.ac.uk",
-    description="A tool for semi-automatic cell type classification",
+    description="A tool for semi-automatic cell type classification (with multinomial models)",
     long_description=get_readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/Teichlab/celltypist",
+    url="https://github.com/aifimmunology/multicelltypist",
     packages=setuptools.find_packages(),
     install_requires=get_requirements(),
     include_package_data=True,

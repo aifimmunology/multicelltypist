@@ -1,3 +1,10 @@
+# About MultiCellTypist
+
+MultiCellTypist is a fork of the CellTypist repository that enables the use of multinomial regression for model training.
+
+Modification of `train.py` was written by Qiuyu Gong.  
+Lucas Graybuck integrated these modifications into this repository.
+
 <p align="left"><img src="https://github.com/Teichlab/celltypist/blob/main/docs/source/_static/img/logo_celltypist.png" width="250" height="85"></p>
 
 [![Python Versions](https://img.shields.io/badge/python-3.6+-brightgreen.svg)](https://pypi.org/project/celltypist) [![Documentation Status](https://readthedocs.org/projects/celltypist/badge/?version=latest)](https://celltypist.readthedocs.io/en/latest/?badge=latest)

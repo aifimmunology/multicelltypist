@@ -7,8 +7,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.linear_model import SGDClassifier
 from sklearn import __version__ as skv
 from typing import Optional, Union
-from .models import Model
-from . import logger
+import logger
+from models import Model
 from scipy.sparse import spmatrix
 from datetime import datetime
 import sys
@@ -123,7 +123,7 @@ def _LRClassifier(indata, labels, C, solver, max_iter, n_jobs, **kwargs) -> Logi
     logger.info(f"🏋️ Training data using logistic regression")
     if (no_cells > 100000) and (indata.shape[1] > 10000):
         logger.warn(f"⚠️ Warning: it may take a long time to train this dataset with {no_cells} cells and {indata.shape[1]} genes, try to downsample cells and/or restrict genes to a subset (e.g., hvgs)")
-    classifier = LogisticRegression(C = C, solver = solver, max_iter = max_iter, multi_class = 'ovr', n_jobs = n_jobs, **kwargs)
+    classifier = LogisticRegression(C = C, solver = solver, max_iter = max_iter, n_jobs = n_jobs, **kwargs)
     classifier.fit(indata, labels)
     return classifier
 
@@ -207,7 +207,7 @@ def train(X = None,
           date: str = '', details: str = '', url: str = '', source: str = '', version: str = '',
           #other param
           **kwargs
-         ) -> Model:
+         )-> Model:
     """
     Train a celltypist model using mini-batch (optional) logistic classifier with a global solver or stochastic gradient descent (SGD) learning.
 

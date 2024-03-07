@@ -7,8 +7,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.linear_model import SGDClassifier
 from sklearn import __version__ as skv
 from typing import Optional, Union
-import logger
-from models import Model
+from .models import Model
+from . import logger
 from scipy.sparse import spmatrix
 from datetime import datetime
 import sys

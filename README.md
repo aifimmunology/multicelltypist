@@ -1,9 +1,31 @@
 # About MultiCellTypist
 
-MultiCellTypist is a fork of the CellTypist repository that enables the use of multinomial regression for model training.
+MultiCellTypist is a fork of the CellTypist repository that enables the use of multinomial regression for model training. This is done by removing the `multi_class = 'ovr'` parameter specification from a hard-coded option in the `train()` function to allow other `multi_class` options to be passed to the `LogisticRegression()` function in `train.py`.
 
-Modification of `train.py` was written by Qiuyu Gong.  
+Modification of `train.py` was performed by Qiuyu Gong.  
 Lucas Graybuck integrated these modifications into this repository.
+
+## Installation from Github
+
+```
+git clone https://github.com/aifimmunology/multicelltypist
+pip install multicelltypist/
+```
+
+## Usage of multinomial regression
+
+```
+training_results = multicelltypist.train(
+    adata, 
+    'cell_type',
+    n_jobs = 60,  
+    max_iter = 10, 
+    multi_class = 'multinomial', # Specify multi_class
+    use_SGD = True
+)
+```
+
+**All Documentation below is from the original CellTypist repository**
 
 <p align="left"><img src="https://github.com/Teichlab/celltypist/blob/main/docs/source/_static/img/logo_celltypist.png" width="250" height="85"></p>
 

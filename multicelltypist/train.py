@@ -110,7 +110,7 @@ def _prepare_data(X, labels, genes, transpose) -> tuple:
         labels = _to_vector(labels)
     return indata, labels, genes
 
-def _LRClassifier(indata, labels, C, solver, max_iter, n_jobs, **kwargs) -> LogisticRegression:
+def _LRClassifier(indata, labels, C, solver, max_iter, multi_class, n_jobs, **kwargs) -> LogisticRegression:
     """
     For internal use. Get the logistic Classifier.
     """
@@ -123,7 +123,7 @@ def _LRClassifier(indata, labels, C, solver, max_iter, n_jobs, **kwargs) -> Logi
     logger.info(f"🏋️ Training data using logistic regression")
     if (no_cells > 100000) and (indata.shape[1] > 10000):
         logger.warn(f"⚠️ Warning: it may take a long time to train this dataset with {no_cells} cells and {indata.shape[1]} genes, try to downsample cells and/or restrict genes to a subset (e.g., hvgs)")
-    classifier = LogisticRegression(C = C, solver = solver, max_iter = max_iter, n_jobs = n_jobs, **kwargs)
+    classifier = LogisticRegression(C = C, solver = solver, max_iter = max_iter, multi_class = multi_class, n_jobs = n_jobs, **kwargs)
     classifier.fit(indata, labels)
     return classifier
 
@@ -194,7 +194,7 @@ def train(X = None,
           with_mean: bool = True,
           check_expression: bool = True,
           #LR param
-          C: float = 1.0, solver: Optional[str] = None, max_iter: Optional[int] = None, n_jobs: Optional[int] = None,
+          C: float = 1.0, solver: Optional[str] = None, max_iter: Optional[int] = None, multi_class: str = 'ovr', n_jobs: Optional[int] = None,
           #SGD param
           use_SGD: bool = False, alpha: float = 0.0001,
           #GPU param
@@ -250,6 +250,12 @@ def train(X = None,
         Try to decrease `max_iter` if the cost function does not converge for a long time.
         This argument is for both traditional and SGD logistic classifiers, and will be ignored if mini-batch SGD training is conducted (`use_SGD = True` and `mini_batch = True`).
         Default to 200, 500, and 1000 for large (>500k cells), medium (50-500k), and small (<50k) datasets, respectively.
+    multi_class
+        Passed to sklearn.linear_model.LogisticRegression:
+        If the option chosen is ‘ovr’, then a binary problem is fit for each label. 
+        For ‘multinomial’ the loss minimised is the multinomial loss fit across the entire probability distribution, even when the data is binary. 
+        ‘multinomial’ is unavailable when solver=’liblinear’. 
+        ‘auto’ selects ‘ovr’ if the data is binary, or if solver=’liblinear’, and otherwise selects ‘multinomial’.
     n_jobs
         Number of CPUs used. Default to one CPU. `-1` means all CPUs are used.
         This argument is for both traditional and SGD logistic classifiers.
@@ -369,7 +375,7 @@ def train(X = None,
     elif use_GPU:
         classifier = _cuLRClassifier(indata = indata, labels = labels, C = C, solver = solver, max_iter = max_iter, **kwargs)
     else:
-        classifier = _LRClassifier(indata = indata, labels = labels, C = C, solver = solver, max_iter = max_iter, n_jobs = n_jobs, **kwargs)
+        classifier = _LRClassifier(indata = indata, labels = labels, C = C, solver = solver, max_iter = max_iter, multi_class = multi_class, n_jobs = n_jobs, **kwargs)
     #feature selection -> new classifier and scaler
     if feature_selection:
         logger.info(f"🔎 Selecting features")
@@ -387,7 +393,7 @@ def train(X = None,
         elif use_GPU:
             classifier = _cuLRClassifier(indata = indata[:, gene_index], labels = labels, C = C, solver = solver, max_iter = max_iter, **kwargs)
         else:
-            classifier = _LRClassifier(indata = indata[:, gene_index], labels = labels, C = C, solver = solver, max_iter = max_iter, n_jobs = n_jobs, **kwargs)
+            classifier = _LRClassifier(indata = indata[:, gene_index], labels = labels, C = C, solver = solver, max_iter = max_iter, multi_class = multi_class, n_jobs = n_jobs, **kwargs)
         scaler.mean_ = scaler.mean_[gene_index]
         scaler.var_ = scaler.var_[gene_index]
         scaler.scale_ = scaler.scale_[gene_index]

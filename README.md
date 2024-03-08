@@ -1,6 +1,6 @@
 # About MultiCellTypist
 
-MultiCellTypist is a fork of the CellTypist repository that enables the use of multinomial regression for model training. This is done by removing the `multi_class = 'ovr'` parameter specification from a hard-coded option in the `train()` function to allow other `multi_class` options to be passed to the `LogisticRegression()` function in `train.py`.
+MultiCellTypist is a fork of the CellTypist repository that enables the use of multinomial regression for model training. This is done by enabling the hard-coded `multi_class = 'ovr'` parameter specification in the `train()` function to be used as a user-provided parameter that allows other `multi_class` options to be passed to the `LogisticRegression()` function in `train.py`.
 
 Modification of `train.py` was performed by Qiuyu Gong.  
 Lucas Graybuck integrated these modifications into this repository.

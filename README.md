@@ -19,6 +19,8 @@ pip install multicelltypist/
 
 ## Usage of multinomial regression
 
+*Note:* Multinomial regression uses a single model across classes, so may not parallelize as well as the `ovr` option, which performs model training for each class. 
+
 ```
 training_results = multicelltypist.train(
     adata, 

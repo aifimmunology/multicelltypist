@@ -12,6 +12,11 @@ git clone https://github.com/aifimmunology/multicelltypist
 pip install multicelltypist/
 ```
 
+## Installation in Juptyer Notebook:
+```
+!pip install -q https://github.com/aifimmunology/multicelltypist/archive/main.zip
+```
+
 ## Usage of multinomial regression
 
 ```
